@@ -3,6 +3,50 @@ const controller = require('../controllers/maintenanceReservationsWrite');
 
 const router = express.Router();
 
+router.get(
+  '/maintenance/order',
+  /*
+    #swagger.tags = ['Maintenance']
+    #swagger.summary = 'List all maintenance orders'
+    #swagger.description = 'Returns every maintenance order in the collection.'
+    #swagger.responses[200] = {
+      description: 'Maintenance orders returned'
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error'
+    }
+  */
+  controller.getMaintenanceAll
+);
+
+router.get(
+  '/maintenance/order/:id',
+  /*
+    #swagger.tags = ['Maintenance']
+    #swagger.summary = 'Get a maintenance order by ID'
+    #swagger.description = 'Returns the maintenance order matching the supplied MongoDB ObjectId.'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      required: true,
+      type: 'string',
+      description: 'The 24-character MongoDB ID of the maintenance order'
+    }
+    #swagger.responses[200] = {
+      description: 'Maintenance order returned'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid document ID'
+    }
+    #swagger.responses[404] = {
+      description: 'Maintenance order not found'
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error'
+    }
+  */
+  controller.getMaintenanceById
+);
+
 router.post(
   '/maintenance/order',
   /*
@@ -59,6 +103,50 @@ router.put(
     }
   */
   controller.updateMaintenance
+);
+
+router.get(
+  '/reservations',
+  /*
+    #swagger.tags = ['Reservations']
+    #swagger.summary = 'List all reservations'
+    #swagger.description = 'Returns every reservation in the collection.'
+    #swagger.responses[200] = {
+      description: 'Reservations returned'
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error'
+    }
+  */
+  controller.getReservationAll
+);
+
+router.get(
+  '/reservations/:id',
+  /*
+    #swagger.tags = ['Reservations']
+    #swagger.summary = 'Get a reservation by ID'
+    #swagger.description = 'Returns the reservation matching the supplied MongoDB ObjectId.'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      required: true,
+      type: 'string',
+      description: 'The 24-character MongoDB ID of the reservation'
+    }
+    #swagger.responses[200] = {
+      description: 'Reservation returned'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid document ID'
+    }
+    #swagger.responses[404] = {
+      description: 'Reservation not found'
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error'
+    }
+  */
+  controller.getReservationById
 );
 
 router.post(

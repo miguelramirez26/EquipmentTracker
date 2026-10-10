@@ -252,6 +252,21 @@
       }
     },
     "/maintenance/order": {
+      "get": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "List all maintenance orders",
+        "description": "Returns every maintenance order in the collection.",
+        "responses": {
+          "200": {
+            "description": "Maintenance orders returned"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "post": {
         "tags": [
           "Maintenance"
@@ -294,6 +309,36 @@
       }
     },
     "/maintenance/order/{id}": {
+      "get": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Get a maintenance order by ID",
+        "description": "Returns the maintenance order matching the supplied MongoDB ObjectId.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The 24-character MongoDB ID of the maintenance order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance order returned"
+          },
+          "400": {
+            "description": "Invalid document ID"
+          },
+          "404": {
+            "description": "Maintenance order not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "put": {
         "tags": [
           "Maintenance"
@@ -334,6 +379,21 @@
       }
     },
     "/reservations": {
+      "get": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "List all reservations",
+        "description": "Returns every reservation in the collection.",
+        "responses": {
+          "200": {
+            "description": "Reservations returned"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "post": {
         "tags": [
           "Reservations"
@@ -376,6 +436,36 @@
       }
     },
     "/reservations/{id}": {
+      "get": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Get a reservation by ID",
+        "description": "Returns the reservation matching the supplied MongoDB ObjectId.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The 24-character MongoDB ID of the reservation"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reservation returned"
+          },
+          "400": {
+            "description": "Invalid document ID"
+          },
+          "404": {
+            "description": "Reservation not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "put": {
         "tags": [
           "Reservations"
