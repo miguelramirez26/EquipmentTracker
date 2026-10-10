@@ -38,6 +38,9 @@
           "400": {
             "description": "Invalid inventory data"
           },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -95,6 +98,9 @@
           "400": {
             "description": "Invalid ID or inventory data"
           },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
+          },
           "404": {
             "description": "Inventory item not found"
           },
@@ -119,6 +125,9 @@
           },
           "400": {
             "description": "Invalid document ID"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
           },
           "404": {
             "description": "Inventory item not found"
@@ -159,6 +168,9 @@
           },
           "400": {
             "description": "Invalid customer data"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
           },
           "500": {
             "description": "Internal server error"
@@ -217,6 +229,9 @@
           "400": {
             "description": "Invalid ID or customer data"
           },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
+          },
           "404": {
             "description": "Customer not found"
           },
@@ -241,6 +256,9 @@
           },
           "400": {
             "description": "Invalid document ID"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
           },
           "404": {
             "description": "Customer not found"
@@ -301,6 +319,9 @@
           },
           "400": {
             "description": "Invalid fields or inventory reference"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
           },
           "500": {
             "description": "Internal server error"
@@ -369,6 +390,9 @@
           "400": {
             "description": "Invalid ID, fields, or inventory reference"
           },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
+          },
           "404": {
             "description": "Maintenance order not found"
           },
@@ -428,6 +452,9 @@
           },
           "400": {
             "description": "Invalid fields, dates, or document references"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
           },
           "500": {
             "description": "Internal server error"
@@ -495,6 +522,9 @@
           },
           "400": {
             "description": "Invalid ID, fields, dates, or document references"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
           },
           "404": {
             "description": "Reservation not found"

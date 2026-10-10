@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('../controllers/maintenanceReservationsWrite');
+const { isAuthenticated } = require('../middleware/authenticate');
 
 const router = express.Router();
 
@@ -65,10 +66,14 @@ router.post(
     #swagger.responses[400] = {
       description: 'Invalid fields or inventory reference'
     }
+    #swagger.responses[401] = {
+      description: 'Authentication required. Please log in through GitHub.'
+    }
     #swagger.responses[500] = {
       description: 'Internal server error'
     }
   */
+  isAuthenticated,
   controller.createMaintenance
 );
 
@@ -95,6 +100,9 @@ router.put(
     #swagger.responses[400] = {
       description: 'Invalid ID, fields, or inventory reference'
     }
+    #swagger.responses[401] = {
+      description: 'Authentication required. Please log in through GitHub.'
+    }
     #swagger.responses[404] = {
       description: 'Maintenance order not found'
     }
@@ -102,6 +110,7 @@ router.put(
       description: 'Internal server error'
     }
   */
+  isAuthenticated,
   controller.updateMaintenance
 );
 
@@ -167,10 +176,14 @@ router.post(
     #swagger.responses[400] = {
       description: 'Invalid fields, dates, or document references'
     }
+    #swagger.responses[401] = {
+      description: 'Authentication required. Please log in through GitHub.'
+    }
     #swagger.responses[500] = {
       description: 'Internal server error'
     }
   */
+  isAuthenticated,
   controller.createReservation
 );
 
@@ -197,6 +210,9 @@ router.put(
     #swagger.responses[400] = {
       description: 'Invalid ID, fields, dates, or document references'
     }
+    #swagger.responses[401] = {
+      description: 'Authentication required. Please log in through GitHub.'
+    }
     #swagger.responses[404] = {
       description: 'Reservation not found'
     }
@@ -204,6 +220,7 @@ router.put(
       description: 'Internal server error'
     }
   */
+  isAuthenticated,
   controller.updateReservation
 );
 

@@ -43,7 +43,8 @@ passport.use(new GitHubStrategy({
 // 1. Serve Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// 2. Mount API write operations
+// 2. Mount authentication and API routes
+app.use('/', require('./routes/index'));
 app.use('/', require('./routes/writeOperations'));
 app.use('/', require('./routes/maintenanceReservationsWrite'));
 
