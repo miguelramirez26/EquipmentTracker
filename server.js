@@ -9,14 +9,33 @@ const GitHubStrategy = require('passport-github2').Strategy;
 
 const app = express();
 const port = process.env.PORT || 8080;
+const isProduction = process.env.NODE_ENV === 'production';
+const callbackURL =
+  process.env.CALLBACK_URL ||
+  (process.env.RENDER_EXTERNAL_URL
+    ? `${process.env.RENDER_EXTERNAL_URL.replace(/\/$/, '')}/auth/github/callback`
+    : isProduction
+      ? null
+      : 'http://localhost:8080/auth/github/callback');
+
+if (!callbackURL) {
+  throw new Error(
+    'Set CALLBACK_URL or RENDER_EXTERNAL_URL to the public OAuth callback URL in production.'
+  );
+}
 
 app.use(express.json());
 app.use(cors());
 
+app.set('trust proxy', 1);
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      secure: isProduction,
+      sameSite: 'lax',
+    },
 }));
 
 app.use(passport.initialize());
@@ -33,7 +52,7 @@ passport.deserializeUser((obj, done) => {
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.CALLBACK_URL || "http://localhost:8080"
+    callbackURL,
     },
     (accessToke, refreshToken, profile, done) => {
         return done(null, profile);
