@@ -2,7 +2,7 @@ const swaggerAutogen = require('swagger-autogen')();
 const fs = require('node:fs');
 
 const authenticationDescription =
-  'Open /auth/github in a browser tab to sign in with GitHub, then return to /api-docs. Do not use Swagger Execute for login or logout.';
+  'To use protected routes (POST, PUT, DELETE), sign in with GitHub by opening /auth/github in a browser tab, then return to /api-docs.';
 
 const doc = {
   info: {

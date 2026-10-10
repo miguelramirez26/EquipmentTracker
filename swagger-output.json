@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Equipment Tracker API",
-    "description": "API for managing inventory, customers, maintenance orders, and reservations. Open /auth/github in a browser tab to sign in with GitHub, then return to /api-docs. Do not use Swagger Execute for login or logout.",
+    "description": "API for managing inventory, customers, maintenance orders, and reservations. To use protected routes (POST, PUT, DELETE), sign in with GitHub by opening /auth/github in a browser tab, then return to /api-docs.",
     "version": "1.0.0"
   },
   "basePath": "/",
@@ -11,7 +11,7 @@
       "type": "apiKey",
       "in": "header",
       "name": "Cookie",
-      "description": "Open /auth/github in a browser tab to sign in with GitHub, then return to /api-docs. Do not use Swagger Execute for login or logout."
+      "description": "To use protected routes (POST, PUT, DELETE), sign in with GitHub by opening /auth/github in a browser tab, then return to /api-docs."
     }
   },
   "paths": {
