@@ -1,13 +1,26 @@
 const swaggerAutogen = require('swagger-autogen')();
+const fs = require('node:fs');
+
+const authenticationDescription =
+  'Sign in with GitHub at /login in another tab, then return to /api-docs.';
 
 const doc = {
   info: {
     title: 'Equipment Tracker API',
     description:
-      'API for managing inventory, customers, maintenance orders, and reservations.',
+      'API for managing inventory, customers, maintenance orders, and reservations. ' +
+      authenticationDescription,
   },
   host: null,
   schemes: null,
+  securityDefinitions: {
+    githubAuth: {
+      type: 'apiKey',
+      in: 'header',
+      name: 'Cookie',
+      description: authenticationDescription,
+    },
+  },
   definitions: {
     Inventory: {
       name: 'Excavator',
@@ -48,4 +61,26 @@ const endpointsFiles = [
   './routes/maintenanceReservationsWrite.js',
 ];
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc)
+  .then(() => {
+    const swaggerDocument = JSON.parse(
+      fs.readFileSync(outputFile, 'utf8')
+    );
+
+    for (const path of Object.values(swaggerDocument.paths)) {
+      for (const method of ['post', 'put', 'delete']) {
+        if (path[method]) {
+          path[method].security = [{ githubAuth: [] }];
+        }
+      }
+    }
+
+    fs.writeFileSync(
+      outputFile,
+      `${JSON.stringify(swaggerDocument, null, 2)}\n`
+    );
+  })
+  .catch((error) => {
+    console.error('Failed to generate secured Swagger documentation:', error);
+    process.exitCode = 1;
+  });

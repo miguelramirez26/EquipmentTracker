@@ -2,10 +2,18 @@
   "swagger": "2.0",
   "info": {
     "title": "Equipment Tracker API",
-    "description": "API for managing inventory, customers, maintenance orders, and reservations.",
+    "description": "API for managing inventory, customers, maintenance orders, and reservations. Sign in with GitHub at /login in another tab, then return to /api-docs.",
     "version": "1.0.0"
   },
   "basePath": "/",
+  "securityDefinitions": {
+    "githubAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Cookie",
+      "description": "Sign in with GitHub at /login in another tab, then return to /api-docs."
+    }
+  },
   "paths": {
     "/inventory": {
       "get": {
@@ -44,7 +52,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/inventory/{id}": {
@@ -107,7 +120,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       },
       "delete": {
         "description": "",
@@ -135,7 +153,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/customers": {
@@ -175,7 +198,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/customers/{id}": {
@@ -238,7 +266,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       },
       "delete": {
         "description": "",
@@ -266,7 +299,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/maintenance/order": {
@@ -326,7 +364,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/maintenance/order/{id}": {
@@ -399,7 +442,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/reservations": {
@@ -459,7 +507,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/reservations/{id}": {
@@ -532,7 +585,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     }
   },
