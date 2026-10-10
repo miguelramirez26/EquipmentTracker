@@ -67,47 +67,8 @@ app.use('/', require('./routes/index'));
 app.use('/', require('./routes/writeOperations'));
 app.use('/', require('./routes/maintenanceReservationsWrite'));
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (character) => {
-    const entities = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;',
-    };
-
-    return entities[character];
-  });
-}
-
 app.get('/', (req, res) => {
-  const username = req.isAuthenticated()
-    ? req.user?.username || req.user?.displayName
-    : null;
-  const userHeading = username
-    ? `<p>Signed in as ${escapeHtml(username)}</p>`
-    : '';
-
-  return res
-    .type('html')
-    .send(`<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Equipment Tracker API</title>
-  </head>
-  <body>
-    ${userHeading}
-    <h1>Equipment Tracker API</h1>
-    <nav>
-      <a href="/auth/github">Login with GitHub</a>
-      <a href="/logout">Logout</a>
-      <a href="/api-docs">API Docs</a>
-    </nav>
-  </body>
-</html>`);
+  res.redirect('/api-docs');
 });
 
 // Error handling middleware
