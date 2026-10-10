@@ -2,7 +2,7 @@ const swaggerAutogen = require('swagger-autogen')();
 const fs = require('node:fs');
 
 const authenticationDescription =
-  'Sign in with GitHub at /login in another tab, then return to /api-docs.';
+  'Open /auth/github in a browser tab to sign in with GitHub, then return to /api-docs. Do not use Swagger Execute for login or logout.';
 
 const doc = {
   info: {
@@ -57,6 +57,7 @@ const doc = {
 const outputFile = './swagger-output.json';
 
 const endpointsFiles = [
+  './routes/index.js',
   './routes/writeOperations.js',
   './routes/maintenanceReservationsWrite.js',
 ];

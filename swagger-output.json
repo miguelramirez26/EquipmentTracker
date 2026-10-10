@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Equipment Tracker API",
-    "description": "API for managing inventory, customers, maintenance orders, and reservations. Sign in with GitHub at /login in another tab, then return to /api-docs.",
+    "description": "API for managing inventory, customers, maintenance orders, and reservations. Open /auth/github in a browser tab to sign in with GitHub, then return to /api-docs. Do not use Swagger Execute for login or logout.",
     "version": "1.0.0"
   },
   "basePath": "/",
@@ -11,10 +11,74 @@
       "type": "apiKey",
       "in": "header",
       "name": "Cookie",
-      "description": "Sign in with GitHub at /login in another tab, then return to /api-docs."
+      "description": "Open /auth/github in a browser tab to sign in with GitHub, then return to /api-docs. Do not use Swagger Execute for login or logout."
     }
   },
   "paths": {
+    "/auth/github": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Sign in with GitHub",
+        "description": "Open this link in a browser to start GitHub OAuth. Do not use Swagger Execute; after login, return to the API Docs tab.",
+        "responses": {
+          "302": {
+            "description": "Redirects the browser to GitHub for authentication"
+          },
+          "500": {
+            "description": "Authentication could not be started"
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/github/callback": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Log out",
+        "description": "Open this link in a browser to end the current session. Do not use Swagger Execute; the browser redirects to API Docs after logout.",
+        "responses": {
+          "302": {
+            "description": "Session ended and browser redirected to API Docs"
+          },
+          "500": {
+            "description": "Logout failed"
+          }
+        }
+      }
+    },
+    "/auth/status": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/inventory": {
       "get": {
         "summary": "List all inventory items",
