@@ -7,10 +7,24 @@ jest.mock('../models/writeOperations', () => ({
 const model = require('../models/writeOperations');
 const routes = require('../routes/writeOperations');
 const maintenanceReservationRoutes = require('../routes/maintenanceReservationsWrite');
+const authenticationRoutes = require('../routes/index');
 
 const app = express();
 app.use('/', routes);
 app.use('/', maintenanceReservationRoutes);
+
+let authenticated = true;
+const authenticationApp = express();
+authenticationApp.use((req, res, next) => {
+  req.isAuthenticated = () => authenticated;
+  req.logout = (callback) => {
+    authenticated = false;
+    callback();
+  };
+  next();
+});
+authenticationApp.use(authenticationRoutes);
+authenticationApp.use(routes);
 
 afterEach(() => jest.clearAllMocks());
 
@@ -107,5 +121,23 @@ describe('GET reservation routes', () => {
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: 'Document not found' });
     expect(model.getOneDocument).toHaveBeenCalledWith('reservations', id);
+  });
+});
+
+describe('logout route', () => {
+  test('GET /logout redirects to API docs and protected POST returns 401 afterward', async () => {
+    authenticated = true;
+
+    const logoutResponse = await request(authenticationApp).get('/logout');
+    const writeResponse = await request(authenticationApp)
+      .post('/inventory')
+      .send({ name: 'Unauthenticated item' });
+
+    expect(logoutResponse.status).toBe(302);
+    expect(logoutResponse.headers.location).toBe('/api-docs');
+    expect(writeResponse.status).toBe(401);
+    expect(writeResponse.body).toEqual({
+      error: 'Authentication required. Please log in through GitHub.',
+    });
   });
 });
