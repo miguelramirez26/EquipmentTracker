@@ -150,7 +150,35 @@ function createWriteController(collectionName, resourcePath) {
     }
   }
 
-  return { create, update, getAll, getById };
+  async function remove(req, res) {
+    try {
+      const { id } = req.params;
+
+      if (!isValidId(id)) {
+        return res.status(400).json({
+          error: 'Invalid document ID',
+        });
+      }
+
+      const result = await model.deleteDocument(collectionName, id);
+
+      if (result.deletedCount === 0) {
+        return res.status(404).json({
+          error: 'Document not found',
+        });
+      }
+
+      return res.status(204).send();
+    } catch (error) {
+      console.error(`Failed to delete ${collectionName}:`, error.message);
+
+      return res.status(500).json({
+        error: 'Internal server error',
+      });
+    }
+  }
+
+  return { create, update, remove, getAll, getById };
 }
 
 const maintenance = createWriteController(
@@ -166,10 +194,12 @@ const reservations = createWriteController(
 module.exports = {
   createMaintenance: maintenance.create,
   updateMaintenance: maintenance.update,
+  deleteMaintenance: maintenance.remove,
   getMaintenanceAll: maintenance.getAll,
   getMaintenanceById: maintenance.getById,
   createReservation: reservations.create,
   updateReservation: reservations.update,
+  deleteReservation: reservations.remove,
   getReservationAll: reservations.getAll,
   getReservationById: reservations.getById,
 };

@@ -1,19 +1,29 @@
 const express = require('express');
 const request = require('supertest');
+
 jest.mock('../models/writeOperations', () => ({
+  deleteDocument: jest.fn(),
   getAllDocument: jest.fn(),
   getOneDocument: jest.fn(),
 }));
+
 const model = require('../models/writeOperations');
-const routes = require('../routes/writeOperations');
+const originalRoutes = require('../routes/writeOperations');
 const maintenanceReservationRoutes = require('../routes/maintenanceReservationsWrite');
 const authenticationRoutes = require('../routes/index');
 
 const app = express();
-app.use('/', routes);
-app.use('/', maintenanceReservationRoutes);
+app.use(express.json());
 
 let authenticated = true;
+app.use((req, res, next) => {
+  req.isAuthenticated = () => authenticated;
+  next();
+});
+
+app.use('/', originalRoutes);
+app.use('/', maintenanceReservationRoutes);
+
 const authenticationApp = express();
 authenticationApp.use((req, res, next) => {
   req.isAuthenticated = () => authenticated;
@@ -24,103 +34,145 @@ authenticationApp.use((req, res, next) => {
   next();
 });
 authenticationApp.use(authenticationRoutes);
-authenticationApp.use(routes);
+authenticationApp.use(originalRoutes);
 
-afterEach(() => jest.clearAllMocks());
+const validId = '507f1f77bcf86cd799439011';
 
-describe('GET inventory routes', () => {
-  test('GET /inventory returns all inventory items with status 200', async () => {
-    const inventory = [{ _id: 'item-1', name: 'Excavator' }];
-    model.getAllDocument.mockResolvedValue(inventory);
+const collections = [
+  ['inventory', '/inventory'],
+  ['customers', '/customers'],
+  ['maintenance', '/maintenance/order'],
+  ['reservations', '/reservations'],
+];
 
-    const response = await request(app).get('/inventory');
+const deletableCollections = [
+  ['reservations', '/reservations'],
+  ['maintenance', '/maintenance/order'],
+];
+
+beforeEach(() => {
+  jest.resetAllMocks();
+  authenticated = true;
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+describe.each(collections)('%s GET routes', (collectionName, path) => {
+  test('GET all returns documents and status 200', async () => {
+    const documents = [{ _id: validId }];
+    model.getAllDocument.mockResolvedValue(documents);
+
+    const response = await request(app).get(path);
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual(inventory);
-    expect(model.getAllDocument).toHaveBeenCalledWith('inventory');
+    expect(response.body).toEqual(documents);
+    expect(model.getAllDocument).toHaveBeenCalledWith(collectionName);
   });
 
-  test('GET /inventory/:id returns 404 for a valid but nonexistent ID', async () => {
-    const id = '507f1f77bcf86cd799439011';
+  test('GET by ID returns the matching document and status 200', async () => {
+    const document = { _id: validId };
+    model.getOneDocument.mockResolvedValue(document);
+
+    const response = await request(app).get(`${path}/${validId}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(document);
+    expect(model.getOneDocument).toHaveBeenCalledWith(
+      collectionName,
+      validId
+    );
+  });
+
+  test('GET by ID rejects an invalid ID with status 400', async () => {
+    const response = await request(app).get(`${path}/abc`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ error: 'Invalid document ID' });
+    expect(model.getOneDocument).not.toHaveBeenCalled();
+  });
+
+  test('GET by ID returns 404 when the document does not exist', async () => {
     model.getOneDocument.mockResolvedValue(null);
 
-    const response = await request(app).get(`/inventory/${id}`);
+    const response = await request(app).get(`${path}/${validId}`);
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: 'Document not found' });
-    expect(model.getOneDocument).toHaveBeenCalledWith('inventory', id);
+    expect(model.getOneDocument).toHaveBeenCalledWith(
+      collectionName,
+      validId
+    );
+  });
+
+  test('GET all handles database errors with status 500', async () => {
+    model.getAllDocument.mockRejectedValue(new Error('Database unavailable'));
+
+    const response = await request(app).get(path);
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({ error: 'Internal server error' });
+  });
+
+  test('GET by ID handles database errors with status 500', async () => {
+    model.getOneDocument.mockRejectedValue(new Error('Database unavailable'));
+
+    const response = await request(app).get(`${path}/${validId}`);
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({ error: 'Internal server error' });
   });
 });
 
-describe('GET customer routes', () => {
-  test('GET /customers returns all customers with status 200', async () => {
-    const customers = [{ _id: 'customer-1', firstName: 'Ada' }];
-    model.getAllDocument.mockResolvedValue(customers);
+describe.each(deletableCollections)('%s DELETE route', (collectionName, path) => {
+  test('DELETE returns status 204 on success', async () => {
+    model.deleteDocument.mockResolvedValue({ deletedCount: 1 });
 
-    const response = await request(app).get('/customers');
+    const response = await request(app).delete(`${path}/${validId}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(customers);
-    expect(model.getAllDocument).toHaveBeenCalledWith('customers');
+    expect(response.status).toBe(204);
+    expect(model.deleteDocument).toHaveBeenCalledWith(collectionName, validId);
   });
 
-  test('GET /customers/:id returns 404 for a valid but nonexistent ID', async () => {
-    const id = '507f1f77bcf86cd799439012';
-    model.getOneDocument.mockResolvedValue(null);
+  test('DELETE rejects an invalid ID with status 400', async () => {
+    const response = await request(app).delete(`${path}/abc`);
 
-    const response = await request(app).get(`/customers/${id}`);
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ error: 'Invalid document ID' });
+    expect(model.deleteDocument).not.toHaveBeenCalled();
+  });
+
+  test('DELETE returns 404 when the document does not exist', async () => {
+    model.deleteDocument.mockResolvedValue({ deletedCount: 0 });
+
+    const response = await request(app).delete(`${path}/${validId}`);
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: 'Document not found' });
-    expect(model.getOneDocument).toHaveBeenCalledWith('customers', id);
-  });
-});
-
-describe('GET maintenance routes', () => {
-  test('GET /maintenance/order returns all maintenance orders with status 200', async () => {
-    const maintenance = [{ _id: 'maintenance-1', description: 'Inspection' }];
-    model.getAllDocument.mockResolvedValue(maintenance);
-
-    const response = await request(app).get('/maintenance/order');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(maintenance);
-    expect(model.getAllDocument).toHaveBeenCalledWith('maintenance');
+    expect(model.deleteDocument).toHaveBeenCalledWith(collectionName, validId);
   });
 
-  test('GET /maintenance/order/:id returns 404 for a valid but nonexistent ID', async () => {
-    const id = '507f1f77bcf86cd799439013';
-    model.getOneDocument.mockResolvedValue(null);
+  test('DELETE handles database errors with status 500', async () => {
+    model.deleteDocument.mockRejectedValue(new Error('Database unavailable'));
 
-    const response = await request(app).get(`/maintenance/order/${id}`);
+    const response = await request(app).delete(`${path}/${validId}`);
 
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'Document not found' });
-    expect(model.getOneDocument).toHaveBeenCalledWith('maintenance', id);
-  });
-});
-
-describe('GET reservation routes', () => {
-  test('GET /reservations returns all reservations with status 200', async () => {
-    const reservations = [{ _id: 'reservation-1', status: 'pending' }];
-    model.getAllDocument.mockResolvedValue(reservations);
-
-    const response = await request(app).get('/reservations');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(reservations);
-    expect(model.getAllDocument).toHaveBeenCalledWith('reservations');
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({ error: 'Internal server error' });
   });
 
-  test('GET /reservations/:id returns 404 for a valid but nonexistent ID', async () => {
-    const id = '507f1f77bcf86cd799439014';
-    model.getOneDocument.mockResolvedValue(null);
+  test('DELETE requires authentication and returns status 401 otherwise', async () => {
+    authenticated = false;
 
-    const response = await request(app).get(`/reservations/${id}`);
+    const response = await request(app).delete(`${path}/${validId}`);
 
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'Document not found' });
-    expect(model.getOneDocument).toHaveBeenCalledWith('reservations', id);
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      error: 'Authentication required. Please log in through GitHub.',
+    });
+    expect(model.deleteDocument).not.toHaveBeenCalled();
   });
 });
 

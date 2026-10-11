@@ -448,6 +448,44 @@
             "githubAuth": []
           }
         ]
+      },
+      "delete": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Delete a maintenance order",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The 24-character MongoDB ID of the maintenance order"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted successfully. No response body."
+          },
+          "400": {
+            "description": "Invalid document ID"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
+          },
+          "404": {
+            "description": "Maintenance order not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
       }
     },
     "/reservations": {
@@ -575,6 +613,44 @@
           },
           "400": {
             "description": "Invalid ID, fields, dates, or document references"
+          },
+          "401": {
+            "description": "Authentication required. Please log in through GitHub."
+          },
+          "404": {
+            "description": "Reservation not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "githubAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Delete a reservation",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The 24-character MongoDB ID of the reservation"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted successfully. No response body."
+          },
+          "400": {
+            "description": "Invalid document ID"
           },
           "401": {
             "description": "Authentication required. Please log in through GitHub."
