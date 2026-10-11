@@ -35,7 +35,8 @@
         "tags": [
           "Inventory"
         ],
-        "description": "",
+        "summary": "Create an inventory item",
+        "description": "Creates a new inventory item in the collection.",
         "parameters": [
           {
             "name": "body",
@@ -196,7 +197,8 @@
         "tags": [
           "Customers"
         ],
-        "description": "",
+        "summary": "Create a customer",
+        "description": "Creates a new customer in the collection.",
         "parameters": [
           {
             "name": "body",

@@ -28,6 +28,8 @@ router.get(
 router.post(
 	'/inventory',
 	/* #swagger.tags = ['Inventory'] */
+	/* #swagger.summary = 'Create an inventory item' */
+	/* #swagger.description = 'Creates a new inventory item in the collection.' */
 	/* #swagger.parameters['body'] = { in: 'body', schema: { $ref: '#/definitions/Inventory' } } */
 	/* #swagger.responses[201] = { description: 'Inventory item created' } */
 	/* #swagger.responses[400] = { description: 'Invalid inventory data' } */
@@ -86,6 +88,8 @@ router.get(
 router.post(
 	'/customers',
 	/* #swagger.tags = ['Customers'] */
+	/* #swagger.summary = 'Create a customer' */
+	/* #swagger.description = 'Creates a new customer in the collection.' */
 	/* #swagger.parameters['body'] = { in: 'body', schema: { $ref: '#/definitions/Customer' } } */
 	/* #swagger.responses[201] = { description: 'Customer created' } */
 	/* #swagger.responses[400] = { description: 'Invalid customer data' } */
