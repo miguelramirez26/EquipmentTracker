@@ -17,6 +17,9 @@
   "paths": {
     "/inventory": {
       "get": {
+        "tags": [
+          "Inventory"
+        ],
         "summary": "List all inventory items",
         "description": "Returns every inventory item in the collection.",
         "responses": {
@@ -29,6 +32,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Inventory"
+        ],
         "description": "",
         "parameters": [
           {
@@ -62,6 +68,9 @@
     },
     "/inventory/{id}": {
       "get": {
+        "tags": [
+          "Inventory"
+        ],
         "summary": "Get an inventory item by ID",
         "description": "Returns the inventory item matching the supplied MongoDB ObjectId.",
         "parameters": [
@@ -88,6 +97,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Inventory"
+        ],
         "description": "",
         "parameters": [
           {
@@ -128,6 +140,9 @@
         ]
       },
       "delete": {
+        "tags": [
+          "Inventory"
+        ],
         "description": "",
         "parameters": [
           {
@@ -163,6 +178,9 @@
     },
     "/customers": {
       "get": {
+        "tags": [
+          "Customers"
+        ],
         "summary": "List all customers",
         "description": "Returns every customer in the collection.",
         "responses": {
@@ -175,6 +193,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Customers"
+        ],
         "description": "",
         "parameters": [
           {
@@ -208,6 +229,9 @@
     },
     "/customers/{id}": {
       "get": {
+        "tags": [
+          "Customers"
+        ],
         "summary": "Get a customer by ID",
         "description": "Returns the customer matching the supplied MongoDB ObjectId.",
         "parameters": [
@@ -234,6 +258,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Customers"
+        ],
         "description": "",
         "parameters": [
           {
@@ -274,6 +301,9 @@
         ]
       },
       "delete": {
+        "tags": [
+          "Customers"
+        ],
         "description": "",
         "parameters": [
           {
