@@ -184,10 +184,60 @@ router.put(
   controller.updateReservation
 );
 
-// Delete reserservations
-router.delete('/reservations/:id', isAuthenticated, controller.deleteReservation)
+router.delete(
+  '/reservations/:id',
+  isAuthenticated,
+  /*
+    #swagger.tags = ['Reservations']
+    #swagger.summary = 'Delete a reservation'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      required: true,
+      type: 'string',
+      description: 'The 24-character MongoDB ID of the reservation'
+    }
+    #swagger.responses[204] = {
+      description: 'Deleted successfully. No response body.'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid document ID'
+    }
+    #swagger.responses[404] = {
+      description: 'Reservation not found'
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error'
+    }
+  */
+  controller.deleteReservation
+);
 
-// Delete maintenance
-router.delete('/maintenance/order/:id', isAuthenticated, controller.deleteMaintenance)
+router.delete(
+  '/maintenance/order/:id',
+  isAuthenticated,
+  /*
+    #swagger.tags = ['Maintenance']
+    #swagger.summary = 'Delete a maintenance order'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      required: true,
+      type: 'string',
+      description: 'The 24-character MongoDB ID of the maintenance order'
+    }
+    #swagger.responses[204] = {
+      description: 'Deleted successfully. No response body.'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid document ID'
+    }
+    #swagger.responses[404] = {
+      description: 'Maintenance order not found'
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error'
+    }
+  */
+  controller.deleteMaintenance
+);
 
 module.exports = router;

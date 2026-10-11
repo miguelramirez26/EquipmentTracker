@@ -402,18 +402,35 @@
         }
       },
       "delete": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Delete a maintenance order",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The 24-character MongoDB ID of the maintenance order"
           }
         ],
         "responses": {
+          "204": {
+            "description": "Deleted successfully. No response body."
+          },
+          "400": {
+            "description": "Invalid document ID"
+          },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Maintenance order not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -551,18 +568,35 @@
         }
       },
       "delete": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Delete a reservation",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The 24-character MongoDB ID of the reservation"
           }
         ],
         "responses": {
+          "204": {
+            "description": "Deleted successfully. No response body."
+          },
+          "400": {
+            "description": "Invalid document ID"
+          },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Reservation not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
