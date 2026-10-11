@@ -41,6 +41,8 @@ router.post(
 router.put(
 	'/inventory/:id',
 	/* #swagger.tags = ['Inventory'] */
+	/* #swagger.summary = 'Update an inventory item' */
+	/* #swagger.description = 'Updates the inventory item matching the supplied MongoDB ObjectId.' */
 	/* #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' } */
 	/* #swagger.parameters['body'] = { in: 'body', schema: { $ref: '#/definitions/Inventory' } } */
 	/* #swagger.responses[204] = { description: 'Inventory item updated' } */
@@ -54,6 +56,8 @@ router.put(
 router.delete(
 	'/inventory/:id',
 	/* #swagger.tags = ['Inventory'] */
+	/* #swagger.summary = 'Delete an inventory item' */
+	/* #swagger.description = 'Deletes the inventory item matching the supplied MongoDB ObjectId.' */
 	/* #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' } */
 	/* #swagger.responses[204] = { description: 'Inventory item deleted' } */
 	/* #swagger.responses[400] = { description: 'Invalid document ID' } */
@@ -101,6 +105,8 @@ router.post(
 router.put(
 	'/customers/:id',
 	/* #swagger.tags = ['Customers'] */
+	/* #swagger.summary = 'Update a customer' */
+	/* #swagger.description = 'Updates the customer matching the supplied MongoDB ObjectId.' */
 	/* #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' } */
 	/* #swagger.parameters['body'] = { in: 'body', schema: { $ref: '#/definitions/Customer' } } */
 	/* #swagger.responses[204] = { description: 'Customer updated' } */
@@ -114,6 +120,8 @@ router.put(
 router.delete(
 	'/customers/:id',
 	/* #swagger.tags = ['Customers'] */
+	/* #swagger.summary = 'Delete a customer' */
+	/* #swagger.description = 'Deletes the customer matching the supplied MongoDB ObjectId.' */
 	/* #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' } */
 	/* #swagger.responses[204] = { description: 'Customer deleted' } */
 	/* #swagger.responses[400] = { description: 'Invalid document ID' } */

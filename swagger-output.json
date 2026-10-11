@@ -101,7 +101,8 @@
         "tags": [
           "Inventory"
         ],
-        "description": "",
+        "summary": "Update an inventory item",
+        "description": "Updates the inventory item matching the supplied MongoDB ObjectId.",
         "parameters": [
           {
             "name": "id",
@@ -144,7 +145,8 @@
         "tags": [
           "Inventory"
         ],
-        "description": "",
+        "summary": "Delete an inventory item",
+        "description": "Deletes the inventory item matching the supplied MongoDB ObjectId.",
         "parameters": [
           {
             "name": "id",
@@ -263,7 +265,8 @@
         "tags": [
           "Customers"
         ],
-        "description": "",
+        "summary": "Update a customer",
+        "description": "Updates the customer matching the supplied MongoDB ObjectId.",
         "parameters": [
           {
             "name": "id",
@@ -306,7 +309,8 @@
         "tags": [
           "Customers"
         ],
-        "description": "",
+        "summary": "Delete a customer",
+        "description": "Deletes the customer matching the supplied MongoDB ObjectId.",
         "parameters": [
           {
             "name": "id",
